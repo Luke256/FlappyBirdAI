@@ -1,0 +1,3 @@
+# FlappyBirdAI
+
+ゲームFlappyBirdのAIをGAで作りました

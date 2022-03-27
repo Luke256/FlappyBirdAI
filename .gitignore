@@ -1,0 +1,11 @@
+App/params/*.*
+App/empty.app.dSYM/
+App/engine
+App/example
+build/
+FlappyBird_AI.xcodeproj/
+build.sh
+error.log
+play.sh
+run.sh
+.vscode/
