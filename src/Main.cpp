@@ -175,7 +175,7 @@ struct MainSys{
         Result states(n_agents);
         int32 gen = 0;
         learn = true;
-        while(learn){ // 永遠に学習()
+        while(learn){
             // まずは全員ゲームオーバーになるまで行動
             Array<int32>rank;
             states = env.reset();
@@ -201,7 +201,7 @@ struct MainSys{
                 Print << U"世代:{}, スコア:{}, 残存ユニット:{}"_fmt(gen, states.score, states.alive.count(true));
                 System::Sleep(wait);
             }
-            rank.reverse();
+            rank.reverse(); // 順位付け
             
             // 優秀だったものを選ぶ
             Array<Array<double>>elite;
@@ -209,7 +209,8 @@ struct MainSys{
             for(auto i : step(n_elite)){
                 elite << agents[rank[i]].param;
             }
-            
+
+	    // 交叉
             intersection(elite, mutate);
             
             Console << U"世代:{}, スコア:{}"_fmt(gen, states.score);
@@ -229,6 +230,7 @@ struct MainSys{
                 if(Random() < mutate) agents[id].param[i] = Random() * 2 - 1; // 突然変異
                 else{
                     if(i >= Pos) {
+			// 遺伝子を受け継ぐ元を変更
                         target = (target + 1) % n_elite;
                         Pos = Random(Pos, length);
                     }
@@ -237,7 +239,7 @@ struct MainSys{
             }
         }
         
-        // エリートは残す
+        // エリートは残す(上書き)
         for(auto [idx, i] : Indexed(elite)){
             agents[idx].param = i;
         }
